@@ -1,3 +1,8 @@
+/**
+ * @file vite.config.ts
+ * @description Vite configuration for the ProKit Studio project.
+ * Includes React support and Tailwind CSS integration via the Vite plugin.
+ */
 import path from "path";
 import { defineConfig } from "vite";
 import tailwindcss from "@tailwindcss/vite";

@@ -1,13 +1,24 @@
-
+/**
+ * @file geminiService.ts
+ * @description Service layer for AI-powered jersey design generation using Google Gemini.
+ */
 import { GoogleGenAI, Type } from "@google/genai";
 import { JerseyConfig, JerseyPattern, CollarType, ViewMode } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || "" });
 
-export const generateJerseyDesign = async (prompt: string): Promise<Partial<JerseyConfig>> => {
+/**
+ * Generates a jersey design configuration based on a natural language prompt.
+ *
+ * @param {string} prompt - The user's design theme or description.
+ * @returns {Promise<Partial<JerseyConfig>>} A configuration object containing generated design tokens.
+ */
+export const generateJerseyDesign = async (
+  prompt: string,
+): Promise<Partial<JerseyConfig>> => {
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-3-flash-preview',
+      model: "gemini-3-flash-preview",
       contents: `Design a soccer jersey based on this theme: "${prompt}". 
       Respond with a JSON object containing primaryColor, secondaryColor, accentColor, textColor, pattern (one of: solid, stripes, hoops, gradient, half, chevron), and collarType (one of: round, v-neck, polo).`,
       config: {
@@ -22,12 +33,19 @@ export const generateJerseyDesign = async (prompt: string): Promise<Partial<Jers
             pattern: { type: Type.STRING, enum: Object.values(JerseyPattern) },
             collarType: { type: Type.STRING, enum: Object.values(CollarType) },
           },
-          required: ["primaryColor", "secondaryColor", "accentColor", "textColor", "pattern", "collarType"]
-        }
-      }
+          required: [
+            "primaryColor",
+            "secondaryColor",
+            "accentColor",
+            "textColor",
+            "pattern",
+            "collarType",
+          ],
+        },
+      },
     });
 
-    const result = JSON.parse(response.text || '{}');
+    const result = JSON.parse(response.text || "{}");
     return result;
   } catch (error) {
     console.error("AI Generation Error:", error);

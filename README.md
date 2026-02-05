@@ -1,20 +1,52 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# ProKit Studio 👕
 
-# Run and deploy your AI Studio app
+ProKit Studio is a high-fidelity, CSS-enhanced vector jersey customization suite. It allows users to design and preview soccer jerseys in real-time with various patterns, colors, and personalization options.
 
-This contains everything you need to run your app locally.
+## 🚀 Features
 
-View your app in AI Studio: https://ai.studio/apps/drive/1_p-4bvfiS2rXYJDergYENgYFt7tdnmgc
+- **Real-time Preview**: Instant visualization of design changes on a high-fidelity SVG jersey model.
+- **Dynamic Patterns**: Support for multiple jersey patterns (Stripes, Hoops, Gradient, Half, Chevron).
+- **Personalization**: Custom player names and numbers with real-time SVG text rendering.
+- **Hardware Accelerated**: Uses CSS Variables and hardware-accelerated transforms for smooth interactions.
+- **AI-Powered Design**: (Experimental) Integration with Google Gemini for generating designs from natural language prompts.
+- **Print Support**: Dedicated print styles for exporting design specifications.
 
-## Run Locally
+## 🛠️ Tech Stack
 
-**Prerequisites:**  Node.js
+- **Framework**: [React](https://reactjs.org/) (v19)
+- **Build Tool**: [Vite](https://vitejs.dev/)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/) (v4)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **AI**: [Google Gemini API](https://ai.google.dev/)
 
+## 📂 Project Structure
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+- `src/`: Root of the application source code.
+- `components/`: UI components for jersey visualization and design controls.
+- `services/`: External service integrations (AI generation).
+- `types.ts`: Centralized type definitions for the application state.
+- `index.html`: Entry point HTML with dedicated CSS logic for jersey rendering.
+- `vite.config.ts`: Project build and dev server configuration.
+
+## 📥 Getting Started
+
+1. **Install Dependencies**:
+
+   ```bash
+   npm install
+   ```
+
+2. **Run Development Server**:
+
+   ```bash
+   npm run dev
+   ```
+
+3. **Build for Production**:
+   ```bash
+   npm run build
+   ```
+
+## 🎨 CSS-Driven Design
+
+The project uses a hybrid approach where the jersey's visual state is driven by CSS variables and data attributes on the SVG container. This ensures high performance and decouples the React state from the complex SVG rendering logic.
