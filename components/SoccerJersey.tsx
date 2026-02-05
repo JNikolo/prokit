@@ -46,7 +46,7 @@ const SoccerJersey: React.FC<SoccerJerseyProps> = ({
 
   return (
     <div
-      className={`jersey-container h-full w-full flex items-center justify-center ${className}`}
+      className={`jersey-container relative w-full h-full flex items-center justify-center transition-opacity duration-300 ${className}`}
       style={cssVariables}
       data-view={view}
       data-pattern={pattern}
@@ -54,8 +54,9 @@ const SoccerJersey: React.FC<SoccerJerseyProps> = ({
     >
       <svg
         viewBox="0 0 974 872"
-        className="w-full h-full drop-shadow-2xl"
+        className="w-full h-full max-w-full max-h-full drop-shadow-2xl overflow-visible"
         xmlns="http://www.w3.org/2000/svg"
+        preserveAspectRatio="xMidYMid meet"
       >
         <defs>
           {/* Pattern definitions for Stripes and Hoops */}

@@ -3,7 +3,7 @@
  * @description UI component providing design controls for customizing the jersey.
  */
 import React from "react";
-import { JerseyConfig, JerseyPattern, CollarType, ViewMode } from "../types";
+import { JerseyConfig, JerseyPattern, CollarType } from "../types";
 
 /**
  * Props for the ControlPanel component.
@@ -16,72 +16,103 @@ interface ControlPanelProps {
 }
 
 /**
+ * Helper sub-component for rendering a color picker with a manual hex input.
+ * Modularized to improve re-render performance and maintainability.
+ */
+const ColorInput: React.FC<{
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+}> = ({ label, value, onChange }) => (
+  <div className="flex flex-col gap-1.5">
+    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.1em]">
+      {label}
+    </label>
+    <div className="flex items-center gap-2">
+      <div className="relative group w-11 h-11 shrink-0">
+        <input
+          type="color"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="absolute inset-0 w-full h-full rounded-lg cursor-pointer border border-slate-200 p-0 overflow-hidden bg-transparent z-10 opacity-0"
+        />
+        <div
+          className="w-full h-full rounded-lg border border-slate-200 shadow-sm"
+          style={{ backgroundColor: value }}
+        />
+      </div>
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder="#FFFFFF"
+        className="text-xs font-mono border border-slate-200 rounded-lg px-3 py-2.5 w-full bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all"
+      />
+    </div>
+  </div>
+);
+
+/**
  * A sidebar component containing inputs for colors, patterns, and personalization.
  */
 const ControlPanel: React.FC<ControlPanelProps> = ({ config, onChange }) => {
-  // Helper function to update a single design field while preserving other state
   const updateField = (field: keyof JerseyConfig, value: any) => {
     onChange({ ...config, [field]: value });
   };
 
-  /**
-   * Helper sub-component for rendering a color picker with a manual hex input.
-   */
-  const ColorInput = ({
-    label,
-    field,
-  }: {
-    label: string;
-    field: keyof JerseyConfig;
-  }) => (
-    <div className="flex flex-col gap-1">
-      <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-        {label}
-      </label>
-      <div className="flex items-center gap-2">
-        <div className="relative group">
-          <input
-            type="color"
-            value={config[field] as string}
-            onChange={(e) => updateField(field, e.target.value)}
-            className="w-10 h-10 rounded cursor-pointer border border-slate-200 p-0 overflow-hidden bg-transparent"
+  return (
+    <div className="space-y-10">
+      {/* Kit Colors Section */}
+      <section className="space-y-5">
+        <div className="flex items-center gap-3">
+          <h3 className="text-xs font-black text-slate-900 uppercase tracking-[0.2em]">
+            Base Colors
+          </h3>
+          <div className="h-px flex-1 bg-slate-100" />
+        </div>
+        <div className="grid grid-cols-2 xs:grid-cols-2 gap-x-4 gap-y-5">
+          <ColorInput
+            label="Primary"
+            value={config.primaryColor}
+            onChange={(val) => updateField("primaryColor", val)}
+          />
+          <ColorInput
+            label="Secondary"
+            value={config.secondaryColor}
+            onChange={(val) => updateField("secondaryColor", val)}
+          />
+          <ColorInput
+            label="Accent / Trim"
+            value={config.accentColor}
+            onChange={(val) => updateField("accentColor", val)}
+          />
+          <ColorInput
+            label="Text / Details"
+            value={config.textColor}
+            onChange={(val) => updateField("textColor", val)}
           />
         </div>
-        <input
-          type="text"
-          value={config[field] as string}
-          onChange={(e) => updateField(field, e.target.value)}
-          className="text-sm font-mono border rounded px-2 py-1 w-full bg-white focus:ring-2 focus:ring-blue-500 outline-none"
-        />
-      </div>
-    </div>
-  );
+      </section>
 
-  return (
-    <div className="bg-white rounded-2xl shadow-sm border p-6 space-y-8 overflow-y-auto max-h-[calc(100vh-100px)]">
-      <div className="space-y-4">
-        <h3 className="text-sm font-bold text-slate-900 uppercase tracking-widest border-b pb-2">
-          Kit Colors
-        </h3>
-        <div className="grid grid-cols-2 gap-4">
-          <ColorInput label="Primary" field="primaryColor" />
-          <ColorInput label="Secondary" field="secondaryColor" />
-          <ColorInput label="Accent" field="accentColor" />
-          <ColorInput label="Text" field="textColor" />
+      {/* Pattern & Style Section */}
+      <section className="space-y-6">
+        <div className="flex items-center gap-3">
+          <h3 className="text-xs font-black text-slate-900 uppercase tracking-[0.2em]">
+            Pattern & Cut
+          </h3>
+          <div className="h-px flex-1 bg-slate-100" />
         </div>
-      </div>
 
-      <div className="space-y-4">
-        <div>
-          <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-2">
-            Pattern Selection
+        <div className="space-y-4">
+          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.1em]">
+            Jersey Pattern
           </label>
           <div className="grid grid-cols-3 gap-2">
             {Object.values(JerseyPattern).map((p) => (
               <button
                 key={p}
                 onClick={() => updateField("pattern", p)}
-                className={`py-2 px-1 text-xs border rounded-lg capitalize transition-all ${config.pattern === p ? "bg-slate-900 text-white border-slate-900 shadow-md" : "bg-white text-slate-600 hover:border-slate-300"}`}
+                className={`py-3 px-1 text-[10px] font-bold border rounded-xl capitalize transition-all ${config.pattern === p ? "bg-slate-900 text-white border-slate-900 shadow-md scale-[1.02]" : "bg-white text-slate-600 border-slate-200 hover:border-slate-300 active:scale-95"}`}
               >
                 {p}
               </button>
@@ -89,31 +120,35 @@ const ControlPanel: React.FC<ControlPanelProps> = ({ config, onChange }) => {
           </div>
         </div>
 
-        <div>
-          <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-2">
-            Collar Style
+        <div className="space-y-4">
+          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.1em]">
+            Collar Construction
           </label>
           <div className="flex gap-2">
             {Object.values(CollarType).map((c) => (
               <button
                 key={c}
                 onClick={() => updateField("collarType", c)}
-                className={`flex-1 py-2 text-xs border rounded-lg capitalize transition-all ${config.collarType === c ? "bg-slate-900 text-white border-slate-900 shadow-md" : "bg-white text-slate-600 hover:border-slate-300"}`}
+                className={`flex-1 py-3 text-[10px] font-bold border rounded-xl capitalize transition-all ${config.collarType === c ? "bg-slate-900 text-white border-slate-900 shadow-md scale-[1.02]" : "bg-white text-slate-600 border-slate-200 hover:border-slate-300 active:scale-95"}`}
               >
                 {c}
               </button>
             ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="space-y-4">
-        <h3 className="text-sm font-bold text-slate-900 uppercase tracking-widest border-b pb-2">
-          Personalization
-        </h3>
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-2">
+      {/* Personalization Section */}
+      <section className="space-y-5">
+        <div className="flex items-center gap-3">
+          <h3 className="text-xs font-black text-slate-900 uppercase tracking-[0.2em]">
+            Personalization
+          </h3>
+          <div className="h-px flex-1 bg-slate-100" />
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-5 gap-4">
+          <div className="sm:col-span-2">
+            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.1em] block mb-2">
               Number
             </label>
             <input
@@ -121,36 +156,42 @@ const ControlPanel: React.FC<ControlPanelProps> = ({ config, onChange }) => {
               maxLength={2}
               value={config.backNumber}
               onChange={(e) => updateField("backNumber", e.target.value)}
-              className="w-full border rounded-lg px-3 py-2 bg-slate-50 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+              className="w-full border border-slate-200 rounded-xl px-4 py-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all font-bold"
             />
           </div>
-          <div>
-            <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider block mb-2">
-              Name
+          <div className="sm:col-span-3">
+            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.1em] block mb-2">
+              Player Name
             </label>
             <input
               type="text"
               value={config.backName}
               onChange={(e) => updateField("backName", e.target.value)}
-              className="w-full border rounded-lg px-3 py-2 bg-slate-50 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+              className="w-full border border-slate-200 rounded-xl px-4 py-3 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-all font-bold"
             />
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl border border-slate-100">
-        <span className="text-sm font-medium text-slate-700">
-          Display Crest
-        </span>
+      {/* Features Section */}
+      <section className="flex items-center justify-between p-5 bg-slate-50 rounded-2xl border border-slate-200/60 shadow-inner">
+        <div>
+          <span className="text-xs font-bold text-slate-900 uppercase tracking-wider block">
+            Display Crest
+          </span>
+          <span className="text-[10px] text-slate-500">
+            Enable team branding
+          </span>
+        </div>
         <button
           onClick={() => updateField("showCrest", !config.showCrest)}
-          className={`w-12 h-6 rounded-full transition-colors relative focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 ${config.showCrest ? "bg-blue-600" : "bg-slate-300"}`}
+          className={`w-14 h-7 rounded-full transition-all relative focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:ring-offset-2 ${config.showCrest ? "bg-blue-600 shadow-blue-200 shadow-lg" : "bg-slate-300"}`}
         >
           <div
-            className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform duration-200 ease-in-out ${config.showCrest ? "translate-x-6" : ""}`}
+            className={`absolute top-1 left-1 w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-300 ease-in-out ${config.showCrest ? "translate-x-7" : ""}`}
           />
         </button>
-      </div>
+      </section>
     </div>
   );
 };
