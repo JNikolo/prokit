@@ -1,94 +1,126 @@
-
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ProKit Customizer</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        body { font-family: 'Inter', sans-serif; overflow-x: hidden; }
-        
-        /* CSS-Driven Jersey Styling */
-        .jersey-container {
-            --primary: #ef4444;
-            --secondary: #1e293b;
-            --accent: #fde047;
-            --text: #ffffff;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+      body {
+        font-family: "Inter", sans-serif;
+        overflow-x: hidden;
+      }
 
-        .jersey-body {
-            fill: var(--primary);
-            stroke: var(--secondary);
-            stroke-width: 1px;
-            transition: fill 0.4s ease, stroke 0.4s ease;
-        }
+      /* CSS-Driven Jersey Styling */
+      .jersey-container {
+        --primary: #ef4444;
+        --secondary: #1e293b;
+        --accent: #fde047;
+        --text: #ffffff;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
 
-        /* Patterns logic via Data Attributes */
-        .jersey-container[data-pattern="stripes"] .jersey-body { fill: url(#stripes-pattern); }
-        .jersey-container[data-pattern="hoops"] .jersey-body { fill: url(#hoops-pattern); }
-        .jersey-container[data-pattern="gradient"] .jersey-body { fill: url(#gradient-pattern); }
-        .jersey-container[data-pattern="half"] .jersey-body { fill: url(#half-pattern); }
-        .jersey-container[data-pattern="solid"] .jersey-body { fill: var(--primary); }
+      .jersey-body {
+        fill: var(--primary);
+        stroke: var(--secondary);
+        stroke-width: 1px;
+        transition:
+          fill 0.4s ease,
+          stroke 0.4s ease;
+      }
 
-        /* View Switching Logic with Scale/Opacity effects */
-        .jersey-view-front, .jersey-view-back { 
-            transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-            opacity: 0;
-            pointer-events: none;
-            transform-origin: center;
-        }
-        
-        .jersey-container[data-view="front"] .jersey-view-front { 
-            opacity: 1; 
-            pointer-events: auto;
-            transform: scale(1) translateY(0);
-        }
-        .jersey-container[data-view="back"] .jersey-view-back { 
-            opacity: 1; 
-            pointer-events: auto;
-            transform: scale(1) translateY(0);
-        }
-        
-        /* Entrance animation for the hidden view */
-        .jersey-container[data-view="front"] .jersey-view-back { transform: scale(0.95) translateY(10px); }
-        .jersey-container[data-view="back"] .jersey-view-front { transform: scale(0.95) translateY(10px); }
+      /* Patterns logic via Data Attributes */
+      .jersey-container[data-pattern="stripes"] .jersey-body {
+        fill: url(#stripes-pattern);
+      }
+      .jersey-container[data-pattern="hoops"] .jersey-body {
+        fill: url(#hoops-pattern);
+      }
+      .jersey-container[data-pattern="gradient"] .jersey-body {
+        fill: url(#gradient-pattern);
+      }
+      .jersey-container[data-pattern="half"] .jersey-body {
+        fill: url(#half-pattern);
+      }
+      .jersey-container[data-pattern="solid"] .jersey-body {
+        fill: var(--primary);
+      }
 
-        /* Collar Logic (Zero-JS Visibility) */
-        .collar-part { 
-            display: none; 
-            fill: var(--accent);
-            stroke: var(--secondary);
-            stroke-width: 2px;
-        }
-        .jersey-container[data-collar="round"] .collar-round { display: block; fill: none; stroke-width: 12px; }
-        .jersey-container[data-collar="v-neck"] .collar-v-neck { display: block; fill: none; stroke-width: 12px; }
-        .jersey-container[data-collar="polo"] .collar-polo { display: block; }
+      /* View Switching Logic with Scale/Opacity effects */
+      .jersey-view-front,
+      .jersey-view-back {
+        transition:
+          opacity 0.4s ease,
+          transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        opacity: 0;
+        pointer-events: none;
+        transform-origin: center;
+      }
 
-        /* Smooth CSS Transitions for all parts */
-        .jersey-part { 
-            transition: fill 0.3s ease, stroke 0.3s ease, opacity 0.3s ease; 
-        }
+      .jersey-container[data-view="front"] .jersey-view-front {
+        opacity: 1;
+        pointer-events: auto;
+        transform: scale(1) translateY(0);
+      }
+      .jersey-container[data-view="back"] .jersey-view-back {
+        opacity: 1;
+        pointer-events: auto;
+        transform: scale(1) translateY(0);
+      }
 
-        @media print {
-            aside { display: none; }
-            main { padding: 0; background: white; }
+      /* Entrance animation for the hidden view */
+      .jersey-container[data-view="front"] .jersey-view-back {
+        transform: scale(0.95) translateY(10px);
+      }
+      .jersey-container[data-view="back"] .jersey-view-front {
+        transform: scale(0.95) translateY(10px);
+      }
+
+      /* Collar Logic (Zero-JS Visibility) */
+      .collar-part {
+        display: none;
+        fill: var(--accent);
+        stroke: var(--secondary);
+        stroke-width: 2px;
+      }
+      .jersey-container[data-collar="round"] .collar-round {
+        display: block;
+        fill: none;
+        stroke-width: 12px;
+      }
+      .jersey-container[data-collar="v-neck"] .collar-v-neck {
+        display: block;
+        fill: none;
+        stroke-width: 12px;
+      }
+      .jersey-container[data-collar="polo"] .collar-polo {
+        display: block;
+      }
+
+      /* Smooth CSS Transitions for all parts */
+      .jersey-part {
+        transition:
+          fill 0.3s ease,
+          stroke 0.3s ease,
+          opacity 0.3s ease;
+      }
+
+      @media print {
+        aside {
+          display: none;
         }
+        main {
+          padding: 0;
+          background: white;
+        }
+      }
     </style>
-<script type="importmap">
-{
-  "imports": {
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "react": "https://esm.sh/react@^19.2.3",
-    "@google/genai": "https://esm.sh/@google/genai@^1.37.0",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
-  }
-}
-</script>
-</head>
-<body class="bg-slate-50 text-slate-900">
+  </head>
+  <body class="bg-slate-50 text-slate-900">
     <div id="root"></div>
-</body>
+    <script type="module" src="/index.tsx"></script>
+  </body>
 </html>
