@@ -14,6 +14,33 @@ The core visualization engine. It renders a high-fidelity SVG model of a soccer 
   - Interactive collar styles (Round, V-Neck, Polo).
   - Dynamic text placement for names and numbers.
 
+### `Header.tsx`
+
+Application header and navigation hub.
+
+- **Features**:
+  - ProKit Studio branding.
+  - Interactive configuration toggle.
+  - Responsive design for mobile and desktop views.
+
+### `Sidebar.tsx`
+
+Configuration container for the design studio.
+
+- **Features**:
+  - Modal behavior on mobile devices.
+  - Side panel layout for desktop screens.
+  - Hosts the `ControlPanel` for design adjustments.
+
+### `JerseyCanvas.tsx`
+
+Interactive stage for the jersey visualization.
+
+- **Features**:
+  - Visual stage for the `SoccerJersey` component.
+  - Design-focused background aesthetics.
+  - Front/Back view toggle controls.
+
 ### `ControlPanel.tsx`
 
 The primary interaction hub for users.

@@ -6,16 +6,16 @@ This directory contains service layers for interacting with external APIs and ha
 
 ### `geminiService.ts`
 
-Integetes with the **Google Gemini API** to provide AI-assisted jersey design.
+Integrates with the **Google Gemini API** to provide AI-assisted jersey design generation.
 
 - **Functionality**:
-  - Takes a theme/prompt from the user.
-  - Requests a structured JSON design configuration from the Gemini model.
-  - Maps natural language to design tokens (colors, patterns, collar types).
+  - **Prompt Processing**: Takes natural language design themes from the user.
+  - **Design Mapping**: Translates themes into structured design tokens (colors, patterns, collar types).
+  - **Error Handling**: Graceful fallbacks for API or parsing issues.
 
 ## 🔑 Configuration
 
-The AI service expects an `API_KEY` to be present in the environment variables.
+The AI service requires a valid `API_KEY` to be configured in the environment.
 
 ```typescript
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || "" });

@@ -22,11 +22,12 @@ ProKit Studio is a high-fidelity, CSS-enhanced vector jersey customization suite
 ## 📂 Project Structure
 
 - `src/`: Root of the application source code.
-- `components/`: UI components for jersey visualization and design controls.
-- `services/`: External service integrations (AI generation).
-- `types.ts`: Centralized type definitions for the application state.
-- `index.html`: Entry point HTML with dedicated CSS logic for jersey rendering.
-- `vite.config.ts`: Project build and dev server configuration.
+- `components/`: UI components for jersey visualization, layout, and design controls.
+- `services/`: Service layers (AI generation) and external integrations.
+- `types.ts`: Centralized TypeScript definitions for the application state.
+- `index.html`: Application entry point and layout with CSS-driven jersey rendering logic.
+- `index.css`: Tailwind CSS entry point and global styling.
+- `vite.config.ts`: Vite build and development server configuration.
 
 ## 📥 Getting Started
 

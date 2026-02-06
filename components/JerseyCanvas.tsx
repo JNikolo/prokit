@@ -1,3 +1,8 @@
+/**
+ * @file JerseyCanvas.tsx
+ * @description Main display area for the interactive jersey visualization.
+ * Handles the background aesthetics and view toggles for the 3D-like SVG model.
+ */
 import React from "react";
 import SoccerJersey from "./SoccerJersey";
 import { JerseyConfig, ViewMode } from "../types";

@@ -1,3 +1,8 @@
+/**
+ * @file Sidebar.tsx
+ * @description Sidebar container component that hosts the design controls.
+ * Adaptable for both mobile modal and desktop panel layouts.
+ */
 import React from "react";
 import ControlPanel from "./ControlPanel";
 import { JerseyConfig } from "../types";

@@ -1,3 +1,8 @@
+/**
+ * @file Header.tsx
+ * @description Application header component for ProKit Studio.
+ * Contains the logo, branding, and configuration toggle controls.
+ */
 import React from "react";
 
 interface HeaderProps {
