@@ -46,7 +46,7 @@ const SoccerJersey: React.FC<SoccerJerseyProps> = ({
 
   return (
     <div
-      className={`jersey-container h-full w-full flex items-center justify-center ${className}`}
+      className={`jersey-container relative w-full h-full flex items-center justify-center transition-opacity duration-300 ${className}`}
       style={cssVariables}
       data-view={view}
       data-pattern={pattern}
@@ -54,8 +54,9 @@ const SoccerJersey: React.FC<SoccerJerseyProps> = ({
     >
       <svg
         viewBox="0 0 974 872"
-        className="w-full h-full drop-shadow-2xl"
+        className="w-full h-full max-w-full max-h-full drop-shadow-2xl overflow-visible"
         xmlns="http://www.w3.org/2000/svg"
+        preserveAspectRatio="xMidYMid meet"
       >
         <defs>
           {/* Pattern definitions for Stripes and Hoops */}
@@ -63,23 +64,23 @@ const SoccerJersey: React.FC<SoccerJerseyProps> = ({
             id="stripes-pattern"
             x="0"
             y="0"
-            width="100"
-            height="100"
+            width="120"
+            height="120"
             patternUnits="userSpaceOnUse"
           >
-            <rect width="50" height="100" fill="var(--primary)" />
-            <rect x="50" width="50" height="100" fill="var(--secondary)" />
+            <rect width="60" height="120" fill="var(--primary)" />
+            <rect x="60" width="60" height="120" fill="var(--secondary)" />
           </pattern>
           <pattern
             id="hoops-pattern"
             x="0"
             y="0"
-            width="100"
-            height="100"
+            width="120"
+            height="120"
             patternUnits="userSpaceOnUse"
           >
-            <rect width="974" height="50" fill="var(--primary)" />
-            <rect y="50" width="974" height="50" fill="var(--secondary)" />
+            <rect width="974" height="60" fill="var(--primary)" />
+            <rect y="60" width="974" height="60" fill="var(--secondary)" />
           </pattern>
 
           {/* Gradient definitions */}
@@ -98,29 +99,47 @@ const SoccerJersey: React.FC<SoccerJerseyProps> = ({
             <stop offset="50%" stopColor="var(--secondary)" />
           </linearGradient>
 
+          {/* Realistic Fabric Lighting Effects */}
+          <radialGradient id="fabric-light" cx="50%" cy="30%" r="70%">
+            <stop offset="0%" stopColor="white" stopOpacity="0.15" />
+            <stop offset="100%" stopColor="black" stopOpacity="0.15" />
+          </radialGradient>
+
           {/* Clipping path to ensure patterns don't overflow the shirt silhouette */}
           <clipPath id="shirt-clip">
             <path d={templatePath} />
           </clipPath>
         </defs>
 
-        {/* Shadow Overlay Path */}
+        {/* Global Outer Shadow */}
         <path
           d={templatePath}
           fill="black"
           opacity="0.1"
-          transform="translate(4, 4)"
+          transform="translate(8, 12)"
+          filter="blur(10px)"
         />
 
-        {/* Main Shirt Body */}
-        <path d={templatePath} className="jersey-body jersey-part" />
+        {/* Main Shirt Body with Pattern */}
+        <path
+          d={templatePath}
+          className="jersey-body jersey-part transition-all duration-700"
+        />
+
+        {/* Fabric Lighting Overlay */}
+        <path
+          d={templatePath}
+          fill="url(#fabric-light)"
+          className="pointer-events-none"
+          style={{ mixBlendMode: "overlay" }}
+        />
 
         {/* Collar System - Conditional Visibility based on View */}
         <g
           className="collar-system"
           style={{
             opacity: view === ViewMode.FRONT ? 1 : 0,
-            transition: "opacity 0.3s ease",
+            transition: "opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
           }}
         >
           {/* Black interior fill - This sits behind the collar but over the shirt pattern */}
@@ -147,26 +166,26 @@ const SoccerJersey: React.FC<SoccerJerseyProps> = ({
             d="M378 1 Q487 145 596 1"
             fill="none"
             stroke="var(--accent)"
-            strokeWidth="16"
+            strokeWidth="20"
             strokeLinecap="round"
-            className="collar-round collar-part"
+            className="collar-round collar-part transition-all duration-500"
           />
           <path
             d="M378 1 L487 165 L596 1"
             fill="none"
             stroke="var(--accent)"
-            strokeWidth="16"
+            strokeWidth="20"
             strokeLinecap="round"
-            className="collar-v-neck collar-part"
+            className="collar-v-neck collar-part transition-all duration-500"
           />
 
-          <g className="collar-polo collar-part">
+          <g className="collar-polo collar-part transition-all duration-500">
             {/* The main V part of the polo */}
             <path
               d="M378 1 L487 165 L596 1"
               fill="none"
               stroke="var(--accent)"
-              strokeWidth="16"
+              strokeWidth="20"
               strokeLinecap="round"
             />
             {/* The flaps */}
@@ -174,7 +193,7 @@ const SoccerJersey: React.FC<SoccerJerseyProps> = ({
               d="M378 1 L315 75 L487 165 L655 75 L596 1"
               fill="var(--accent)"
               stroke="var(--secondary)"
-              strokeWidth="4"
+              strokeWidth="5"
             />
           </g>
         </g>
@@ -182,12 +201,12 @@ const SoccerJersey: React.FC<SoccerJerseyProps> = ({
         {/* Back neck line - A subtle seam when viewing from the back */}
         {view === ViewMode.BACK && (
           <path
-            d="M378 1 Q487 30 596 1"
+            d="M378 1 Q487 25 596 1"
             fill="none"
             stroke="var(--accent)"
-            strokeWidth="4"
+            strokeWidth="6"
             strokeDasharray="4 4"
-            opacity="0.4"
+            opacity="0.3"
           />
         )}
 
@@ -195,60 +214,79 @@ const SoccerJersey: React.FC<SoccerJerseyProps> = ({
         <g className="jersey-view-front">
           {/* Crest */}
           <g
-            transform="translate(320, 260)"
+            transform="translate(325, 265)"
             style={{ visibility: showCrest ? "visible" : "hidden" }}
           >
+            {/* Crest Outer Glow */}
+            <circle cx="0" cy="0" r="50" fill="var(--accent)" opacity="0.1" />
             <circle
               cx="0"
               cy="0"
               r="45"
               fill="var(--accent)"
               stroke="var(--secondary)"
-              strokeWidth="5"
-              className="jersey-part"
+              strokeWidth="6"
+              className="jersey-part shadow-lg"
             />
             <path
-              d="M-18 -18 L18 18 M-18 18 L18 -18"
+              d="M-20 -20 L20 20 M-20 20 L20 -20"
               stroke="var(--secondary)"
-              strokeWidth="5"
+              strokeWidth="6"
               strokeLinecap="round"
+            />
+            <path
+              d="M-45 0 Q0 -45 45 0 Q0 45 -45 0"
+              fill="none"
+              stroke="var(--secondary)"
+              strokeWidth="2"
+              opacity="0.2"
             />
           </g>
 
           {/* Front Number */}
           <text
-            x="630"
-            y="280"
+            x="640"
+            y="285"
             fill="var(--text)"
-            fontSize="72"
+            fontSize="84"
             fontWeight="900"
             textAnchor="middle"
-            style={{ filter: "drop-shadow(0 2px 2px rgba(0,0,0,0.2))" }}
+            className="transition-all duration-700"
+            style={{
+              filter: "drop-shadow(0 4px 4px rgba(0,0,0,0.25))",
+              fontFamily: "Inter, sans-serif",
+            }}
           >
             {backNumber}
           </text>
 
           {/* Sponsor Area */}
-          <rect
-            x="337"
-            y="440"
-            width="300"
-            height="90"
-            fill="var(--text)"
-            opacity="0.1"
-            rx="12"
-          />
-          <text
-            x="487"
-            y="495"
-            fill="var(--text)"
-            fontSize="38"
-            textAnchor="middle"
-            fontWeight="900"
-            style={{ opacity: 0.7, letterSpacing: "6px" }}
-          >
-            SPONSOR
-          </text>
+          <g className="transition-all duration-700">
+            <rect
+              x="317"
+              y="440"
+              width="340"
+              height="100"
+              fill="var(--text)"
+              opacity="0.15"
+              rx="20"
+            />
+            <text
+              x="487"
+              y="502"
+              fill="var(--text)"
+              fontSize="42"
+              textAnchor="middle"
+              fontWeight="900"
+              style={{
+                opacity: 0.8,
+                letterSpacing: "8px",
+                filter: "drop-shadow(0 2px 2px rgba(0,0,0,0.1))",
+              }}
+            >
+              SPONSOR
+            </text>
+          </g>
         </g>
 
         {/* Interactive Layer: Back */}
@@ -258,26 +296,32 @@ const SoccerJersey: React.FC<SoccerJerseyProps> = ({
             x="487"
             y="230"
             fill="var(--text)"
-            fontSize="52"
+            fontSize="54"
             fontWeight="800"
             textAnchor="middle"
+            className="transition-all duration-700"
             style={{
-              letterSpacing: "10px",
-              filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.3))",
+              letterSpacing: "12px",
+              filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.4))",
+              textTransform: "uppercase",
             }}
           >
-            {backName.toUpperCase()}
+            {backName}
           </text>
 
           {/* Large Back Number */}
           <text
             x="487"
-            y="580"
+            y="590"
             fill="var(--text)"
-            fontSize="340"
+            fontSize="360"
             fontWeight="900"
             textAnchor="middle"
-            style={{ filter: "drop-shadow(0 4px 10px rgba(0,0,0,0.4))" }}
+            className="transition-all duration-700"
+            style={{
+              filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.5))",
+              fontFamily: "Inter, sans-serif",
+            }}
           >
             {backNumber}
           </text>
@@ -285,12 +329,13 @@ const SoccerJersey: React.FC<SoccerJerseyProps> = ({
 
         {/* Bottom Hem Trim */}
         <path
-          d="M246 858 Q487 872 726 858"
+          d="M246 858 Q487 874 726 858"
           stroke="var(--accent)"
-          strokeWidth="12"
+          strokeWidth="16"
           fill="none"
-          opacity="0.9"
+          opacity="0.95"
           strokeLinecap="round"
+          className="jersey-part transition-all duration-700"
         />
       </svg>
     </div>
